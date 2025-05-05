@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
-import { dummyInterviews } from '@/constants'
 import InterviewCard from '@/components/InterviewCard'
 import { getCurrentUser, getInterviewByUserId, getLatestInterviews } from '@/lib/actions/auth.action'
 
@@ -12,12 +11,12 @@ const page = async () => {
 
   //Parallel Fetching of both process without affecting Each other
   const [userInterviews,latestInterviews] = await Promise.all([
-    await getInterviewByUserId(user?.id),
-    await getLatestInterviews({userId:user?.id!})
+    await getInterviewByUserId(user?.id ?? ''),
+    await getLatestInterviews({userId:user?.id ?? ''})
   ])
 
-  const hasPastInterviews = userInterviews?.length>0;
-  const hasUpcomingInterviews = latestInterviews?.length>0;
+  const hasPastInterviews = userInterviews?.length ?? 0 > 0;
+  const hasUpcomingInterviews = latestInterviews?.length ?? 0 > 0;
 
   return (
     <>
